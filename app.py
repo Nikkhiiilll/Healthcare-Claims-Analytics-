@@ -45,17 +45,17 @@ col2.metric("Total Amount", f"₹{int(view['claim_amount'].sum()):,}")
 col3.metric("Average Claim", f"₹{int(view['claim_amount'].mean()):,}")
 col4.metric("Median Claim", f"₹{int(view['claim_amount'].median()):,}")
 
-# Trend
+#Trend
 tr = view.groupby('month', as_index=False)['claim_amount'].sum()
 fig1 = px.line(tr, x='month', y='claim_amount', title='Monthly Claim Amount', markers=True)
 st.plotly_chart(fig1, use_container_width=True)
 
-# Payer comparison
+#Payer comparison
 pay = view.groupby('payer', as_index=False)['claim_amount'].sum()
 fig2 = px.bar(pay, x='payer', y='claim_amount', title='Claim Amount by Payer')
 st.plotly_chart(fig2, use_container_width=True)
 
-# Anomaly detection
+#Anomaly detection
 st.markdown("## Anomaly Detection (Isolation Forest)")
 sample = view[['claim_amount','patient_age']].dropna().sample(min(5000, len(view)), random_state=42)
 iso = IsolationForest(contamination=0.005, random_state=42)
@@ -69,3 +69,4 @@ st.plotly_chart(fig3, use_container_width=True)
 
 st.markdown("### Sample flagged anomalies")
 st.dataframe(outliers.head(10))
+
